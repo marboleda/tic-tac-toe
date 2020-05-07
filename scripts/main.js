@@ -1,7 +1,11 @@
 const gameBoard = (() => {
-    gameBoardArray = ["x", "o", "x",
-                      "x", "o", "x",
-                      "o", "x", "o"]
+    gameBoardArray = [null, null, null,
+                      null, null, null,
+                      null, null, null];
+
+    const addMark = (mark, index) => {
+        gameBoardArray[index] = mark;
+    };
 
     const render = () => {
         const gameBoardDiv = document.getElementById("game-board");
@@ -14,7 +18,7 @@ const gameBoard = (() => {
         })
     }
 
-    return { render }
+    return { render, addMark }
 
 })();
 
@@ -22,4 +26,6 @@ const playerFactory = () => {
 
 }
 
+gameBoard.addMark("x", 0);
+gameBoard.addMark("o", 3);
 gameBoard.render();
