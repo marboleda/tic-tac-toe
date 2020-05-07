@@ -5,10 +5,11 @@ const gameBoard = (() => {
 
     const render = () => {
         const gameBoardDiv = document.getElementById("game-board");
-        gameBoardArray.forEach((val) => {
+        gameBoardArray.forEach((val, index) => {
             const newCell = document.createElement("div");
             newCell.classList.add("cell");
             newCell.textContent = val;
+            newCell.setAttribute("data-cellnum", index.toString());
             gameBoardDiv.appendChild(newCell);
         })
     }
