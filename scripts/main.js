@@ -1,5 +1,5 @@
 const gameBoard = (() => {
-    gameBoardArray = [null, null, null,
-                      null, null, null,
-                      null, null, null]
+    gameBoardArray = ["x", "o", "x",
+                      "x", "o", "x",
+                      "o", "x", "o"]
 })();
