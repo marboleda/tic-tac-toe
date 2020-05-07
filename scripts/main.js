@@ -3,3 +3,7 @@ const gameBoard = (() => {
                       "x", "o", "x",
                       "o", "x", "o"]
 })();
+
+const playerFactory = () => {
+    
+}
