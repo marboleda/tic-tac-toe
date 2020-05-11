@@ -22,8 +22,14 @@ const gameBoard = (() => {
 
 })();
 
-const playerFactory = () => {
+const player = (mark) => {
 
+    const getMark = () => mark;
+
+    const placeMark = (x,y) => {
+    }
+
+    return { getMark, placeMark }
 }
 
 gameBoard.addMark("x", 0);
