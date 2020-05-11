@@ -1,3 +1,12 @@
+/*
+const game = (() => {
+    const playRound = (gameBoard, player) {
+        gameBoard.addMark()
+    }
+
+})();
+*/
+
 const gameBoard = (() => {
     gameBoardArray = [null, null, null,
                       null, null, null,
@@ -22,15 +31,19 @@ const gameBoard = (() => {
 
 })();
 
-const player = (mark) => {
+const Player = (mark) => {
 
     const getMark = () => mark;
 
-    const placeMark = (x,y) => {
+    const placeMark = (gameBoardIndex) => {
+        return gameBoardIndex;
     }
 
     return { getMark, placeMark }
 }
+
+const human = Player("o");
+const computer = Player("x");
 
 gameBoard.addMark("x", 0);
 gameBoard.addMark("o", 3);
