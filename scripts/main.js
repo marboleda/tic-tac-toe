@@ -1,19 +1,11 @@
-
-const game = (() => {
-    const updateGameboard = (gameBoard, player, index) => {
-        gameBoard.addMark(player.getMark(), index);
-        document.getElementById("game-board").innerHTML = "";
-        gameBoard.render();
-    }
-
-    return { updateGameboard }
+const game = ((board) => {
 
 })();
 
 const gameBoard = (() => {
-    gameBoardArray = [null, null, null,
-                      null, null, null,
-                      null, null, null];
+    const gameBoardArray = [null, null, null,
+                            null, null, null,
+                            null, null, null];
     let player;
     let opponent;
 
@@ -27,18 +19,23 @@ const gameBoard = (() => {
 
     const setOpponent = (opponentInput) => {
         opponent = opponentInput;
-    } 
+    }
+    
+    const getGameBoardArray = () => {
+        return gameBoardArray;
+    }
 
     const addCellListeners = () => {
         const cells = document.querySelectorAll(".cell");
         cells.forEach((cell, index) => {
             cell.addEventListener("click", (e) => {
                 cell.textContent = player.getMark();
+                gameBoardArray[index] = player.getMark();
             })
         });
     }
 
-    return { addCellListeners, setOpponent, setPlayer, addMark }
+    return { addCellListeners, getGameBoardArray, setOpponent, setPlayer, addMark }
 
 })();
 
@@ -46,14 +43,11 @@ const Player = (mark) => {
 
     const getMark = () => mark;
 
-    const placeMark = (gameBoardIndex) => {
-        return gameBoardIndex;
-    }
-
-    return { getMark, placeMark }
+    return { getMark }
 }
 
 const human = Player("o");
 const computer = Player("x");
 gameBoard.setPlayer(human);
+gameBoard.setOpponent(computer);
 gameBoard.addCellListeners();
