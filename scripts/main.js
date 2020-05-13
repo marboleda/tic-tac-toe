@@ -14,25 +14,31 @@ const gameBoard = (() => {
     gameBoardArray = [null, null, null,
                       null, null, null,
                       null, null, null];
+    let player;
+    let opponent;
 
     const addMark = (mark, index) => {
         gameBoardArray[index] = mark;
     };
 
-    const render = (player) => {
-        /*
-        const gameBoardDiv = document.getElementById("game-board");
-        gameBoardArray.forEach((val, index) => {
-            const newCell = document.createElement("div");
-            newCell.classList.add("cell");
-            newCell.textContent = val;
-            newCell.setAttribute("data-cellnum", index.toString());
-            gameBoardDiv.appendChild(newCell);
+    const setPlayer = (playerInput) => {
+        player = playerInput;
+    };
+
+    const setOpponent = (opponentInput) => {
+        opponent = opponentInput;
+    } 
+
+    const addCellListeners = () => {
+        const cells = document.querySelectorAll(".cell");
+        cells.forEach((cell, index) => {
+            cell.addEventListener("click", (e) => {
+                cell.textContent = player.getMark();
+            })
         });
-        */
     }
 
-    return { render, addMark }
+    return { addCellListeners, setOpponent, setPlayer, addMark }
 
 })();
 
@@ -49,5 +55,5 @@ const Player = (mark) => {
 
 const human = Player("o");
 const computer = Player("x");
-
-//gameBoard.render(human);
+gameBoard.setPlayer(human);
+gameBoard.addCellListeners();
