@@ -1,11 +1,14 @@
-/*
+
 const game = (() => {
-    const playRound = (gameBoard, player) {
-        gameBoard.addMark()
+    const updateGameboard = (gameBoard, player, index) => {
+        gameBoard.addMark(player.getMark(), index);
+        document.getElementById("game-board").innerHTML = "";
+        gameBoard.render();
     }
 
+    return { updateGameboard }
+
 })();
-*/
 
 const gameBoard = (() => {
     gameBoardArray = [null, null, null,
@@ -16,7 +19,8 @@ const gameBoard = (() => {
         gameBoardArray[index] = mark;
     };
 
-    const render = () => {
+    const render = (player) => {
+        /*
         const gameBoardDiv = document.getElementById("game-board");
         gameBoardArray.forEach((val, index) => {
             const newCell = document.createElement("div");
@@ -24,7 +28,8 @@ const gameBoard = (() => {
             newCell.textContent = val;
             newCell.setAttribute("data-cellnum", index.toString());
             gameBoardDiv.appendChild(newCell);
-        })
+        });
+        */
     }
 
     return { render, addMark }
@@ -45,6 +50,4 @@ const Player = (mark) => {
 const human = Player("o");
 const computer = Player("x");
 
-gameBoard.addMark("x", 0);
-gameBoard.addMark("o", 3);
-gameBoard.render();
+//gameBoard.render(human);
