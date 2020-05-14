@@ -65,7 +65,9 @@ const gameBoard = (() => {
                     cell.textContent = player1.getMark();
                     gameBoardArray[index] = player1.getMark();
                     displayController.setTurnStatus(false);
-                    takeComputerTurn();
+                    if (!isBoardFull()) {
+                        takeComputerTurn();
+                    }
                 }
             })
         });
@@ -90,43 +92,35 @@ const gameBoard = (() => {
                 }
             }
             if (playerIsWinner) {
+                gameInProgress = false;
+                winner = player.getName();
                 return true;
             }
         }
         return false;
-
-        /* cannot break out of forEach loop with return statement, 
-         *  needed to convert logic to use for loops as above
-        winningStates.forEach((state) => {
-            let playerIsWinner = true;
-            state.forEach((index) => {
-                if (gameBoardArray[index] != player.getMark()) {
-                    playerIsWinner = false;
-                } 
-            });
-            console.log(playerIsWinner);
-            if (playerIsWinner) {
-                return true;
-            }
-        });
-        return false;
-        */
-
     };
 
-    return { addCellListeners, takeComputerTurn, getGameBoardArray, setOpponent, setPlayer1, addMark, isWinner }
+    const isBoardFull = () => {
+        return gameBoardArray.every((cell) => {
+            return cell !== null;
+        });
+    }
+
+    return { addCellListeners, takeComputerTurn, getGameBoardArray, setOpponent, setPlayer1, addMark, isWinner, isBoardFull }
 
 })();
 
-const Player = (mark) => {
+const Player = (mark, name) => {
 
     const getMark = () => mark;
 
-    return { getMark }
+    const getName = () => name;
+
+    return { getMark, getName }
 }
 
-const human = Player("o");
-const computer = Player("x");
+const human = Player("o", "Marco");
+const computer = Player("x", "Computer");
 gameBoard.setPlayer1(human);
 gameBoard.setOpponent(computer);
 gameBoard.addCellListeners();
