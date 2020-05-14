@@ -13,7 +13,11 @@ const displayController = (() => {
                
     }
 
-    return {getTurnStatus, setTurnStatus}
+    const populateCell = (cellIndex, mark) => {
+        document.querySelector(`[data-cellnum='${cellIndex}']`).textContent = mark;       
+    }
+
+    return {getTurnStatus, setTurnStatus, populateCell }
 
 })();
 
@@ -52,6 +56,7 @@ const gameBoard = (() => {
                 cellFilledIn = false;
                 addMark(opponent.getMark(), cellIndex);
                 document.querySelector(`[data-cellnum='${cellIndex}']`).textContent = opponent.getMark();
+                displayController.populateCell(cellIndex, opponent.getMark());
                 displayController.setTurnStatus(true);
             };
         }
@@ -62,10 +67,13 @@ const gameBoard = (() => {
         cells.forEach((cell, index) => {
             cell.addEventListener("click", (e) => {
                 if (displayController.getTurnStatus() && gameInProgress) {
-                    cell.textContent = player1.getMark();
                     gameBoardArray[index] = player1.getMark();
+                    displayController.populateCell(index, player1.getMark());
                     displayController.setTurnStatus(false);
-                    if (!isBoardFull()) {
+                    if (isWinner(player1)) {
+                        
+                    }
+                    if (!isBoardFull() && gameInProgress) {
                         takeComputerTurn();
                     }
                 }
