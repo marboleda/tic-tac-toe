@@ -33,6 +33,7 @@ h1 {
 #input {
     position: relative;
     height: 35vh;
+    width: 35vh;
     top: 32.5%;
     left: 30%;
     display: flex;
