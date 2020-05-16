@@ -42,9 +42,10 @@ h1 {
 
 }
 
-#start-button {
+.game-button {
+    display: block;
     width: 50%;
-    margin: 0 auto;
+    margin: 5px auto;
 }
 
 .cell {

@@ -38,7 +38,17 @@ const displayController = (() => {
                     startGame();
                 }
             }
-        })        
+        });
+        
+        document.getElementById("reset-button").addEventListener("click", () => {
+            if (gameBoard.gameIsInProgress) {
+                gameBoard.resetGameBoard();
+                document.querySelectorAll(".cell").forEach((cell) => {
+                    cell.textContent = "";
+                });
+                results.textContent = "";
+            }
+        });
     }
 
     return {getTurnStatus, setTurnStatus, populateCell, startGame, endGame,addUIFunctionality }
@@ -148,7 +158,15 @@ const gameBoard = (() => {
         gameInProgress = (gameInProgress) ? false : true;
     }
 
-    return { addCellListeners, takeComputerTurn, getGameBoardArray, setOpponent, setPlayer1, addMark, isWinner, isBoardFull, gameIsInProgress, toggleGameStatus }
+    const resetGameBoard = () => {
+        gameBoardArray.fill(null);
+        player1 = undefined;
+        opponent = undefined;
+        toggleGameStatus();
+    }
+
+    return { addCellListeners, takeComputerTurn, getGameBoardArray, setOpponent, setPlayer1, addMark, isWinner, isBoardFull, gameIsInProgress, toggleGameStatus,
+              resetGameBoard }
 
 })();
 
@@ -162,8 +180,3 @@ const Player = (mark, name) => {
 }
 
 displayController.addUIFunctionality();
-//const human = Player("o", "Marco");
-//const computer = Player("x", "Computer");
-//gameBoard.setPlayer1(human);
-//gameBoard.setOpponent(computer);
-//gameBoard.addCellListeners();
