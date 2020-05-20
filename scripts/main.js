@@ -10,8 +10,8 @@ const displayController = (() => {
         player1Turn = status;
     }
 
-    const startGame = () => {
-        gameBoard.toggleGameStatus();
+    const startGame = (mode) => {
+        gameBoard.setGameStatus(mode);
         gameBoard.setOpponent(Player("x", "Computer"));
         gameBoard.addCellListeners();
         results.textContent = `Game in Progress: ${nameInput} vs. Computer`;
@@ -27,21 +27,15 @@ const displayController = (() => {
 
     const addUIFunctionality = () => {
         document.getElementById("start-button").addEventListener("click", () => {
-            nameInput = document.getElementById("player-1-name").value;
+            addStartFunctionalityToButton("normal");
+        });
 
-            if (!gameBoard.gameIsInProgress()) {
-                if (nameInput == "") {
-                    results.textContent = "You must enter a name before starting a game!";
-                }
-                else {
-                    gameBoard.setPlayer1(Player("o", nameInput));
-                    startGame();
-                }
-            }
+        document.getElementById("impossible-button").addEventListener("click", () => {
+            addStartFunctionalityToButton("impossible");
         });
         
         document.getElementById("reset-button").addEventListener("click", () => {
-            if (gameBoard.gameIsInProgress) {
+            if (gameBoard.gameIsInProgress() || gameBoard.impossibleGameIsInProgress()) {
                 gameBoard.resetGameBoard();
                 document.querySelectorAll(".cell").forEach((cell) => {
                     cell.textContent = "";
@@ -50,6 +44,19 @@ const displayController = (() => {
             }
         });
     }
+
+    const addStartFunctionalityToButton = (mode) => {
+        nameInput = document.getElementById("player-1-name").value;
+        if (!gameBoard.gameIsInProgress() && !gameBoard.impossibleGameIsInProgress()) {
+            if (nameInput == "") {
+                results.textContent = "You must enter a name before starting a game!";
+            }
+            else {
+                gameBoard.setPlayer1(Player("o", nameInput));
+                startGame(mode);
+            }
+        }
+    };
 
     return {getTurnStatus, setTurnStatus, populateCell, startGame, endGame,addUIFunctionality }
 
@@ -62,6 +69,7 @@ const gameBoard = (() => {
     let player1;
     let opponent;
     let gameInProgress = false;
+    let impossibleGameInProgress = false;
 
     const addMark = (mark, index) => {
         gameBoardArray[index] = mark;
@@ -99,19 +107,27 @@ const gameBoard = (() => {
         }
     }
 
+    const takeImpossibleComputerTurn = () => {
+        console.log("Taking minimax turn");
+    }
+
     const addCellListeners = () => {
         const cells = document.querySelectorAll(".cell");
         cells.forEach((cell, index) => {
             cell.addEventListener("click", (e) => {
-                if (displayController.getTurnStatus() && gameInProgress) {
+                if (displayController.getTurnStatus() && (gameInProgress || impossibleGameInProgress)) {
                     gameBoardArray[index] = player1.getMark();
                     displayController.populateCell(index, player1.getMark());
                     displayController.setTurnStatus(false);
                     if (isWinner(player1)) {
                         displayController.endGame(player1.getName());
                     }
-                    if (!isBoardFull() && gameInProgress) {
-                        takeComputerTurn();
+                    if (!isBoardFull()) {
+                        if (gameInProgress) {
+                            takeComputerTurn();
+                        } else if (impossibleGameInProgress) {
+                            takeImpossibleComputerTurn();
+                        }
                     }
                 }
             })
@@ -154,19 +170,28 @@ const gameBoard = (() => {
         return gameInProgress;
     }
 
-    const toggleGameStatus = () => {
-        gameInProgress = (gameInProgress) ? false : true;
+    const impossibleGameIsInProgress = () => {
+        return impossibleGameInProgress;
+    }
+
+    const setGameStatus = (mode) => {
+        if (mode == "normal") {
+            gameInProgress = true;
+        } else if (mode == "impossible") {
+            impossibleGameInProgress = true;
+        }
     }
 
     const resetGameBoard = () => {
         gameBoardArray.fill(null);
         player1 = undefined;
         opponent = undefined;
-        toggleGameStatus();
+        gameInProgress = false;
+        impossibleGameInProgress = false;
     }
 
-    return { addCellListeners, takeComputerTurn, getGameBoardArray, setOpponent, setPlayer1, addMark, isWinner, isBoardFull, gameIsInProgress, toggleGameStatus,
-              resetGameBoard }
+    return { addCellListeners, takeComputerTurn, getGameBoardArray, setOpponent, setPlayer1, addMark, isWinner, isBoardFull, gameIsInProgress, setGameStatus,
+              resetGameBoard, impossibleGameIsInProgress }
 
 })();
 
