@@ -17,8 +17,12 @@ const displayController = (() => {
         results.textContent = `Game in Progress: ${nameInput} vs. Computer`;
     }
 
-    const endGame = (winnerName) => {
+    const endGameWithWinner = (winnerName) => {
         results.textContent = `${winnerName} is the winner!`;
+    }
+
+    const endGameWithTie = () => {
+        results.textContent = ("It's a tie!");
     }
 
     const populateCell = (cellIndex, mark) => {
@@ -58,7 +62,7 @@ const displayController = (() => {
         }
     };
 
-    return {getTurnStatus, setTurnStatus, populateCell, startGame, endGame,addUIFunctionality }
+    return {getTurnStatus, setTurnStatus, populateCell, startGame, endGameWithWinner, endGameWithTie, addUIFunctionality }
 
 })();
 
@@ -101,7 +105,11 @@ const gameBoard = (() => {
                 displayController.setTurnStatus(true);
 
                 if (isWinner(opponent)) {
-                    displayController.endGame(opponent.getName());
+                    displayController.endGameWithWinner(opponent.getName());
+                } else {
+                    if (isBoardFull()) {
+                        setTiedGame();
+                    }
                 }
             };
         }
@@ -112,7 +120,7 @@ const gameBoard = (() => {
         let optimalCellIndex = getOptimalCellViaMinimax();
         addMark(opponent.getMark(), optimalCellIndex);
         if (isWinner(opponent)) {
-            displayController.endGame(opponent.getName());
+            displayController.endGameWithWinner(opponent.getName());
         }
     }
 
@@ -135,8 +143,13 @@ const gameBoard = (() => {
                     displayController.populateCell(index, player1.getMark());
                     displayController.setTurnStatus(false);
                     if (isWinner(player1)) {
-                        displayController.endGame(player1.getName());
+                        displayController.endGameWithWinner(player1.getName());
+                    } else {
+                        if (isBoardFull()) {
+                            setTiedGame();
+                        }
                     }
+
                     if (!isBoardFull()) {
                         if (gameInProgress) {
                             takeComputerTurn();
@@ -195,6 +208,12 @@ const gameBoard = (() => {
         } else if (mode == "impossible") {
             impossibleGameInProgress = true;
         }
+    }
+
+    const setTiedGame = () => {
+        gameInProgress = false;
+        impossibleGameInProgress = false;
+        displayController.endGameWithTie();         
     }
 
     const resetGameBoard = () => {
