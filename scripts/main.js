@@ -104,7 +104,7 @@ const gameBoard = (() => {
                 displayController.populateCell(cellIndex, opponent.getMark());
                 displayController.setTurnStatus(true);
 
-                if (isWinner(opponent)) {
+                if (isWinner(gameBoardArray, opponent)) {
                     displayController.endGameWithWinner(opponent.getName());
                 } else {
                     if (isBoardFull()) {
@@ -119,7 +119,7 @@ const gameBoard = (() => {
         console.log("Taking minimax turn");
         let optimalCellIndex = getOptimalCellViaMinimax();
         addMark(opponent.getMark(), optimalCellIndex);
-        if (isWinner(opponent)) {
+        if (isWinner(gameBoardArray, opponent)) {
             displayController.endGameWithWinner(opponent.getName());
         }
     }
@@ -131,7 +131,14 @@ const gameBoard = (() => {
                 availSpots.push(index);
             }
         });
-        console.log(availSpots);
+
+        //check if we are at a terminal state, i.e. a state where the game ends
+        //if (newBoard.)
+
+        const moves = [];
+        availSpots.forEach((element) => {
+            moves.push({index: element, score: 0})
+        })
     }
 
     const addCellListeners = () => {
@@ -142,7 +149,7 @@ const gameBoard = (() => {
                     gameBoardArray[index] = player1.getMark();
                     displayController.populateCell(index, player1.getMark());
                     displayController.setTurnStatus(false);
-                    if (isWinner(player1)) {
+                    if (isWinner(gameBoardArray, player1)) {
                         displayController.endGameWithWinner(player1.getName());
                     } else {
                         if (isBoardFull()) {
@@ -162,7 +169,7 @@ const gameBoard = (() => {
         });
     }
 
-    const isWinner = (player) => {
+    const isWinner = (gameState, player) => {
         let playerIsWinner;
         let winningStates = [[0,1,2],
                              [3,4,5],
@@ -176,7 +183,7 @@ const gameBoard = (() => {
         for (let i = 0; i < winningStates.length; i++) {
             playerIsWinner = true;
             for (let j = 0; j < 3; j++) {
-                if (gameBoardArray[winningStates[i][j]] != player.getMark()) {
+                if (gameState[winningStates[i][j]] != player.getMark()) {
                     playerIsWinner = false;
                 }
             }
