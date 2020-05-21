@@ -109,6 +109,21 @@ const gameBoard = (() => {
 
     const takeImpossibleComputerTurn = () => {
         console.log("Taking minimax turn");
+        let optimalCellIndex = getOptimalCellViaMinimax();
+        addMark(opponent.getMark(), optimalCellIndex);
+        if (isWinner(opponent)) {
+            displayController.endGame(opponent.getName());
+        }
+    }
+
+    const getOptimalCellViaMinimax = (newBoard, player) => {
+        const availSpots = [];
+        gameBoardArray.forEach((cell, index) => {
+            if (cell === null) {
+                availSpots.push(index);
+            }
+        });
+        console.log(availSpots);
     }
 
     const addCellListeners = () => {
