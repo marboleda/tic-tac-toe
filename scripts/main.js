@@ -133,12 +133,20 @@ const gameBoard = (() => {
         });
 
         //check if we are at a terminal state, i.e. a state where the game ends
-        //if (newBoard.)
+        if (isWinner(newBoard, player1)) {
+            return {score: -10};
+        } else if (isWinner(newBoard, opponent)) {
+            return {score: 10};
+        } else if (availSpots.length == 0) {
+            return {score: 0};
+        }
 
         const moves = [];
         availSpots.forEach((element) => {
             moves.push({index: element, score: 0})
         })
+
+
     }
 
     const addCellListeners = () => {
@@ -231,8 +239,9 @@ const gameBoard = (() => {
         impossibleGameInProgress = false;
     }
 
+
     return { addCellListeners, takeComputerTurn, getGameBoardArray, setOpponent, setPlayer1, addMark, isWinner, isBoardFull, gameIsInProgress, setGameStatus,
-              resetGameBoard, impossibleGameIsInProgress }
+              resetGameBoard, impossibleGameIsInProgress, getOptimalCellViaMinimax }
 
 })();
 
