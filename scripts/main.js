@@ -145,7 +145,7 @@ const gameBoard = (() => {
         const cells = document.querySelectorAll(".cell");
         cells.forEach((cell, index) => {
             cell.addEventListener("click", (e) => {
-                if (displayController.getTurnStatus() && (gameInProgress || impossibleGameInProgress)) {
+                if (displayController.getTurnStatus() && (gameInProgress || impossibleGameInProgress) && cell.textContent == "") {
                     gameBoardArray[index] = player1.getMark();
                     displayController.populateCell(index, player1.getMark());
                     displayController.setTurnStatus(false);
