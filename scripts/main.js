@@ -39,13 +39,12 @@ const displayController = (() => {
         });
         
         document.getElementById("reset-button").addEventListener("click", () => {
-            if (gameBoard.gameIsInProgress() || gameBoard.impossibleGameIsInProgress()) {
-                gameBoard.resetGameBoard();
-                document.querySelectorAll(".cell").forEach((cell) => {
-                    cell.textContent = "";
-                });
-                results.textContent = "";
-            }
+            document.querySelectorAll(".cell").forEach((cell) => {
+                cell.textContent = "";
+            });
+            results.textContent = "";
+            gameBoard.resetGameBoard();
+            setTurnStatus(true);
         });
     }
 
