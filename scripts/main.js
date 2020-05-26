@@ -116,15 +116,21 @@ const gameBoard = (() => {
     }
 
     const takeImpossibleComputerTurn = () => {
-        console.log("Taking minimax turn");
-        let optimalCellIndex = getOptimalCellViaMinimax();
-        addMark(opponent.getMark(), optimalCellIndex);
+        let optimalMove = getBestMoveViaMinimax(gameBoardArray, opponent);
+        addMark(opponent.getMark(), optimalMove.index);
+        displayController.populateCell(optimalMove.index, opponent.getMark());
+        displayController.setTurnStatus(true);
+
         if (isWinner(gameBoardArray, opponent)) {
             displayController.endGameWithWinner(opponent.getName());
+        } else {
+            if (isBoardFull()) {
+                setTiedGame();
+            }
         }
     }
 
-    const getOptimalCellViaMinimax = (newBoard, player) => {
+    const getBestMoveViaMinimax = (newBoard, player) => {
         const availSpots = [];
         gameBoardArray.forEach((cell, index) => {
             if (cell === null) {
@@ -143,8 +149,50 @@ const gameBoard = (() => {
 
         const moves = [];
         availSpots.forEach((element) => {
-            moves.push({index: element, score: 0})
-        })
+            let result;
+            const move = {index: element};
+            
+            //try placing your mark on one of the available spots
+            newBoard[element] = player.getMark();
+
+            //collect score from opposing player
+            if (player.getName() == "Computer") {
+                result = getBestMoveViaMinimax(newBoard, player1);
+            } else {
+                result = getBestMoveViaMinimax(newBoard, opponent);
+            }
+
+            move.score = result.score;
+            newBoard[element] = null;
+            moves.push(move);
+        });
+
+            /*
+             * If we are the computer, choose the move with the highest score
+             * otherwise, choose move with the lowest
+            */
+           let bestMove;
+           let bestScore;
+
+           if (player.getName() == "Computer") {
+            bestScore = -9999;
+            moves.forEach((move, index) => {
+                if (move.score > bestScore) {
+                    bestScore = move.score;
+                    bestMove = index;
+                }
+            });
+        } else {
+            bestScore = 9999;
+            moves.forEach((move, index) => {
+                if (move.score < bestScore) {
+                    bestScore = move.score;
+                    bestMove = index;
+                }
+            });
+        }
+
+        return moves[bestMove];
 
 
     }
@@ -241,7 +289,7 @@ const gameBoard = (() => {
 
 
     return { addCellListeners, takeComputerTurn, getGameBoardArray, setOpponent, setPlayer1, addMark, isWinner, isBoardFull, gameIsInProgress, setGameStatus,
-              resetGameBoard, impossibleGameIsInProgress, getOptimalCellViaMinimax }
+              resetGameBoard, impossibleGameIsInProgress, getBestMoveViaMinimax }
 
 })();
 
