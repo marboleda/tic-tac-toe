@@ -61,7 +61,7 @@ const displayController = (() => {
         }
     };
 
-    return {getTurnStatus, setTurnStatus, populateCell, startGame, endGameWithWinner, endGameWithTie, addUIFunctionality }
+    return {getTurnStatus, setTurnStatus, populateCell, endGameWithWinner, endGameWithTie, addUIFunctionality }
 
 })();
 
