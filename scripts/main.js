@@ -85,10 +85,6 @@ const gameBoard = (() => {
     const setOpponent = (opponentInput) => {
         opponent = opponentInput;
     }
-    
-    const getGameBoardArray = () => {
-        return gameBoardArray;
-    }
 
     const takeComputerTurn = () => {
         let cellFilledIn = true;
@@ -287,8 +283,7 @@ const gameBoard = (() => {
     }
 
 
-    return { addCellListeners, takeComputerTurn, getGameBoardArray, setOpponent, setPlayer1, addMark, isWinner, isBoardFull, gameIsInProgress, setGameStatus,
-              resetGameBoard, impossibleGameIsInProgress, getBestMoveViaMinimax }
+    return { addCellListeners, setOpponent, setPlayer1, gameIsInProgress, setGameStatus, resetGameBoard, impossibleGameIsInProgress }
 
 })();
 
