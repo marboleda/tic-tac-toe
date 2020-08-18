@@ -1,13 +1,19 @@
+* {
+    color: #ffffff;
+}
+
 body {
     display: flex;
     height: 100vh;
     width: 100vw;
+    background-color: #000000;
 }
 
 h1 {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    font-family: Arial;
 }
 
 #center {
@@ -39,7 +45,10 @@ h1 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
 
+input, button {
+    color: #000000;
 }
 
 .game-button {
@@ -49,7 +58,8 @@ h1 {
 }
 
 .cell {
-    border: 2px solid black;
+    border: 2px solid #ffffff;
+    background-color: #000099;
     display: flex;
     justify-content: center;
     align-items: center;
