@@ -8,12 +8,12 @@ body {
     width: 100vw;
     background-color: #000000;
     margin: 0;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
 }
 
 h1 {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
     font-family: Arial;
 }
 
@@ -22,7 +22,8 @@ h1 {
     flex-direction: row;
     height: 100%;
     width: 100%;
-    justify-content: flex-start;
+    justify-content: center;
+    padding-top: 15vh;
 }
 
 #game-board {
@@ -31,21 +32,15 @@ h1 {
     grid-template-rows: 33% 33% 33%;
     width: 350px;
     height: 350px;
-    position: relative;
-    top: 50%;
-    left: 25%;
-    transform: translateY(-50%);
 }
 
 #input {
     position: relative;
-    height: 35vh;
-    width: 35vh;
-    top: 32.5%;
-    left: 30%;
+    height: 350px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-left: 5vw;
 }
 
 input, button {
@@ -54,7 +49,7 @@ input, button {
 
 .game-button {
     display: block;
-    width: 50%;
+    width: 60%;
     margin: 5px auto;
 }
 
